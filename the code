@@ -1,0 +1,88 @@
+package javaapplication2;
+
+import java.io.BufferedReader;
+//reads text from a character-input stream, 
+//buffering characters so as to provide for the 
+//efficient reading of lines of our file
+import java.io.FileNotFoundException;
+//exception that we need if file not found
+import java.io.FileReader;
+//inherits from the InputStreamReader class;
+//FileReader is used for reading streams of characters.
+import java.io.IOException;
+//Most methods of this IO class throw an exception if anything goes wrong. 
+//Therefore you have to put block of the code that call this method inside a 
+//try-catch block. The compiler will complain if you don't do this
+import java.util.HashMap;
+//List/Map size increased as you go on inserting new element, so when you 
+//don't have a fixed number of element we can use list/map class. 
+//You have better control on elements, like get first, get last element, etc methods. 
+//Generics, you can't declare generic array but you can have generic list, maps. 
+import java.util.TreeMap;
+//We use TreeMap to sort our HashMap in ascending order
+//Same as Binary Tree but you have better control on elements
+import java.util.Scanner;
+
+public class TheKAMUS {
+    public static HashMap themap = new HashMap();
+    public static TreeMap thetree = new TreeMap();
+    public static String[] keys = new String[71116];
+    public static String[] vals = new String[71116];
+    public static TheKAMUS obj = new TheKAMUS();
+    public int order;
+    public static void main(String[] args) {
+        System.out.println("Wait...");
+        System.out.println("Building database...");
+        obj.portdatabase();
+        //System.out.println("amount of words: "+themap.size());
+        System.out.print("Enter word to find: "); 
+        obj.search();
+    }
+    public void portdatabase() {
+        
+        String csvFile = "/Users/esenovic/Desktop/Kamus/kbbi.dict.csv"; //here is the path in my laptop for this file. input yours
+        BufferedReader br = null;
+        String line = null;
+        String splitpoint = "\t"; 
+        try {
+            br = new BufferedReader(new FileReader(csvFile));
+            while ((line = br.readLine()) != null) {
+                //begins to read the line
+                // use "\t" as separator and splits it in two pieces
+                String[] text = line.split(splitpoint);
+                //deleting unusable
+                text[1] = text[1].replace("[pb]", "").replace("<br>", "");
+                //putting pieces into HashMap
+                themap.put(text[0], text[1]);
+            }
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            if (br != null) {
+                try {
+                    br.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+        System.out.println("DONE.");
+        //after collecting data from csv file we sort them in ascending order
+        thetree.putAll(themap);
+        //now we put keys and values of our map into 2 arrays for better searching
+        //of same or partly same words
+        thetree.keySet().toArray(keys);
+        thetree.values().toArray(vals);
+    }
+    public void search(){
+            Scanner k = new Scanner(System.in); 
+            String g = k.nextLine();
+            for (int i = 1; i < keys.length; i++){
+            if (keys[i].contains(g)) System.out.println(keys[i]+":  "+vals[i]);
+            else {System.out.println("Not found."); break;}
+        }
+    }
+}
