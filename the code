@@ -1,3 +1,4 @@
+package javaapplication2;
 import java.io.BufferedReader;
 //reads text from a character-input stream, 
 //buffering characters so as to provide for the 
@@ -27,7 +28,6 @@ public class TheKAMUS {
     public static String[] keys = new String[71116];
     public static String[] vals = new String[71116];
     public static TheKAMUS obj = new TheKAMUS();
-    public int order;
     public static void main(String[] args) {
         System.out.println("Wait...");
         System.out.println("Building database...");
@@ -76,11 +76,15 @@ public class TheKAMUS {
         thetree.values().toArray(vals);
     }
     public void search(){
-            Scanner k = new Scanner(System.in); 
-            String g = k.nextLine();
-            for (int i = 1; i < keys.length; i++){
-            if (keys[i].contains(g)) System.out.println(keys[i]+":  "+vals[i]);
-            else {System.out.println("Not found."); break;}
+        int a = 0;
+        Scanner k = new Scanner(System.in); 
+        String g = k.nextLine();
+        for (int i = 1; i < keys.length; i++){
+            if (keys[i].contains(g)){
+                System.out.println(keys[i]+":  "+vals[i]);
+                a++;
+            }
         }
+        if (a<1) System.out.println("Not found");
     }
 }
